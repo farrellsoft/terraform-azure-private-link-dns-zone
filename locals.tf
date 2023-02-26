@@ -3,6 +3,7 @@ locals {
     "sql"       = "privatelink.database.windows.net"
     "blob"      = "privatelink.blob.core.windows.net"
     "queue"     = "privatelink.queue.core.windows.net"
+    "file"      = "privatelink.file.core.windows.net"
     "cosmossql" = "privatelink.documents.azure.com"
     "vault"     = "privatelink.vaultcore.azure.net"
     "eventhub"  = "privatelink.servicebus.windows.net"
