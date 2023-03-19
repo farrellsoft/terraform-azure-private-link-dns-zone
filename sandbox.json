@@ -1,0 +1,198 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "variables": {},
+  "resources": [
+      {
+          "type": "Microsoft.Storage/storageAccounts",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda",
+          "location": "eastus",
+          "sku": {
+              "name": "Standard_LRS",
+              "tier": "Standard"
+          },
+          "kind": "StorageV2",
+          "properties": {
+              "publicNetworkAccess": "Disabled",
+              "minimumTlsVersion": "TLS1_0",
+              "allowBlobPublicAccess": false,
+              "networkAcls": {
+                  "bypass": "None",
+                  "virtualNetworkRules": [],
+                  "ipRules": [],
+                  "defaultAction": "Deny"
+              },
+              "supportsHttpsTrafficOnly": true,
+              "encryption": {
+                  "services": {
+                      "file": {
+                          "keyType": "Account",
+                          "enabled": true
+                      },
+                      "blob": {
+                          "keyType": "Account",
+                          "enabled": true
+                      }
+                  },
+                  "keySource": "Microsoft.Storage"
+              },
+              "accessTier": "Hot"
+          }
+      },
+      {
+          "type": "Microsoft.Storage/storageAccounts/blobServices",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda/default",
+          "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts', 'strv4372cbacyda')]"
+          ],
+          "sku": {
+              "name": "Standard_LRS",
+              "tier": "Standard"
+          },
+          "properties": {
+              "cors": {
+                  "corsRules": []
+              },
+              "deleteRetentionPolicy": {
+                  "allowPermanentDelete": false,
+                  "enabled": false
+              }
+          }
+      },
+      {
+          "type": "Microsoft.Storage/storageAccounts/fileServices",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda/default",
+          "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts', 'strv4372cbacyda')]"
+          ],
+          "sku": {
+              "name": "Standard_LRS",
+              "tier": "Standard"
+          },
+          "properties": {
+              "protocolSettings": {
+                  "smb": {}
+              },
+              "cors": {
+                  "corsRules": []
+              },
+              "shareDeleteRetentionPolicy": {
+                  "enabled": true,
+                  "days": 7
+              }
+          }
+      },
+      {
+          "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda/strv4372cbacyda.6d6f3c19-f689-412c-adde-311947560dc0",
+          "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts', 'strv4372cbacyda')]"
+          ],
+          "properties": {
+              "provisioningState": "Succeeded",
+              "privateEndpoint": {},
+              "privateLinkServiceConnectionState": {
+                  "status": "Approved",
+                  "description": "Auto-Approved",
+                  "actionRequired": "None"
+              }
+          }
+      },
+      {
+          "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda/strv4372cbacyda.7bf03a77-86d9-4767-bb47-ae25d5815fde",
+          "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts', 'strv4372cbacyda')]"
+          ],
+          "properties": {
+              "provisioningState": "Succeeded",
+              "privateEndpoint": {},
+              "privateLinkServiceConnectionState": {
+                  "status": "Approved",
+                  "description": "Auto-Approved",
+                  "actionRequired": "None"
+              }
+          }
+      },
+      {
+          "type": "Microsoft.Storage/storageAccounts/queueServices",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda/default",
+          "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts', 'strv4372cbacyda')]"
+          ],
+          "properties": {
+              "cors": {
+                  "corsRules": []
+              }
+          }
+      },
+      {
+          "type": "Microsoft.Storage/storageAccounts/tableServices",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda/default",
+          "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts', 'strv4372cbacyda')]"
+          ],
+          "properties": {
+              "cors": {
+                  "corsRules": []
+              }
+          }
+      },
+      {
+          "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda/default/azure-webjobs-hosts",
+          "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts/blobServices', 'strv4372cbacyda', 'default')]",
+              "[resourceId('Microsoft.Storage/storageAccounts', 'strv4372cbacyda')]"
+          ],
+          "properties": {
+              "immutableStorageWithVersioning": {
+                  "enabled": false
+              },
+              "defaultEncryptionScope": "$account-encryption-key",
+              "denyEncryptionScopeOverride": false,
+              "publicAccess": "None"
+          }
+      },
+      {
+          "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda/default/azure-webjobs-secrets",
+          "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts/blobServices', 'strv4372cbacyda', 'default')]",
+              "[resourceId('Microsoft.Storage/storageAccounts', 'strv4372cbacyda')]"
+          ],
+          "properties": {
+              "immutableStorageWithVersioning": {
+                  "enabled": false
+              },
+              "defaultEncryptionScope": "$account-encryption-key",
+              "denyEncryptionScopeOverride": false,
+              "publicAccess": "None"
+          }
+      },
+      {
+          "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+          "apiVersion": "2022-09-01",
+          "name": "strv4372cbacyda/default/function-content-share",
+          "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts/fileServices', 'strv4372cbacyda', 'default')]",
+              "[resourceId('Microsoft.Storage/storageAccounts', 'strv4372cbacyda')]"
+          ],
+          "properties": {
+              "accessTier": "TransactionOptimized",
+              "shareQuota": 5120,
+              "enabledProtocols": "SMB"
+          }
+      }
+  ]
+}
